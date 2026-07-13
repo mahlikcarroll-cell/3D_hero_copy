@@ -44,9 +44,9 @@ const initPlanet = (): { scene: THREE.Scene, renderer: THREE.WebGLRenderer } => 
 
   // texture
   const TL = new THREE.TextureLoader();
-  const dayTexture = TL.load("./earth/day.jpg");
-  const nightTexture = TL.load("./earth/night.jpg");
-  const specularCloudsTexture = TL.load("./earth/specularClouds.jpg");
+  const dayTexture = TL.load("./mach10-ball/day.jpg");
+  const nightTexture = TL.load("./mach10-ball/night.jpg");
+  const specularCloudsTexture = TL.load("./mach10-ball/specularClouds.jpg");
 
   dayTexture.colorSpace = THREE.SRGBColorSpace;
   nightTexture.colorSpace = THREE.SRGBColorSpace;

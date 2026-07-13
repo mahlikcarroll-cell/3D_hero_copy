@@ -21,11 +21,10 @@ export default function Home() {
     <div className="page">
       <section className="hero_main">
         <div className="content">
-          <h1>Welcome To The New World</h1>
+          <h1>Welcome To Mach10 Creative.</h1>
 
           <p>
-            AI agents that actually bring value to businesses and elevate
-            workers productivity.
+            We build one-of-one systems engineered to keep your business moving.
           </p>
 
           <button className="cta_btn">Get started.</button>

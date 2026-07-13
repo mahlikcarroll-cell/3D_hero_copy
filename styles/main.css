@@ -2,3 +2,11 @@
 @import url("base.css");
 
 @import url("pages/landing.css");
+
+:root {
+  --font-primary: var(--font-montserrat);
+}
+
+body {
+  font-family: var(--font-primary), sans-serif;
+}
