@@ -21,7 +21,9 @@ export default function Home() {
   
   return (
     <div className="page">
-      <section><FloatingNavDemo></FloatingNavDemo></section>
+      <section>
+        <FloatingNavDemo></FloatingNavDemo>
+        </section>
       <section className="hero_main">
         <div className="content">
           <h1 className="hero_main text-black">
@@ -37,7 +39,7 @@ export default function Home() {
       </section>
 
 <section> 
-
+<p>words onna page bruh</p>
 </section>
           
     </div>

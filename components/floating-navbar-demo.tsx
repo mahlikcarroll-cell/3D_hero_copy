@@ -23,7 +23,7 @@ export default function FloatingNavDemo() {
     },
   ];
   return (
-    <div className="relative w-full translate-z-0">
+    <div className="w-full">
       <FloatingNav navItems={navItems} />
     </div>
   );
