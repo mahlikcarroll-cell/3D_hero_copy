@@ -1,16 +1,14 @@
 "use client"
 import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import initPlanet3D from "@/components/3D/planet"
-import { MagicCard } from "@/components/ui/magic-card"
 import FloatingNavDemo from "@/components/floating-navbar-demo"
 import {AmbientVideoModal} from "@/components/ambient-video-modal"
-import {3dPinModal} from "@/components/3d-pin-modal"
+import ProjectPinCard from "@/components/project-pin-card";
 
 export default function Home() {
 
   useEffect(() => {
-    const {scene, renderer} = initPlanet3D()
+    const {renderer} = initPlanet3D()
     
     return () => {
       if (renderer) {
@@ -55,7 +53,12 @@ export default function Home() {
 </section>
 
 <section>
-
+  <ProjectPinCard
+    title="Project 1"
+    description="This is a sample project."
+    imageSrc="/images/project1.jpg"
+    href="/projects/project1"
+  />
 
 </section>
 
