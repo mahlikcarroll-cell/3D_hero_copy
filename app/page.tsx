@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import initPlanet3D from "@/components/3D/planet"
 import { MagicCard } from "@/components/ui/magic-card"
 import FloatingNavDemo from "@/components/floating-navbar-demo"
+import {AmbientVideoModal} from "@/components/ambient-video-modal"
 
 export default function Home() {
 
@@ -18,6 +19,7 @@ export default function Home() {
       }
     }
   }, [])
+  
   
   return (
     <div className="page">
@@ -39,7 +41,16 @@ export default function Home() {
       </section>
 
 <section> 
-<p>words onna page bruh</p>
+<AmbientVideoModal
+  src="/videos/test.mp4"
+  poster="/images/mach10-showreel-poster.jpg"
+  title="Mach10 Creative Showreel"
+  trigger={
+    <span className="inline-flex items-center rounded-full bg-white px-6 py-3 font-medium text-black transition-transform hover:scale-105">
+      Watch the showreel
+    </span>
+  }
+/>
 </section>
           
     </div>
