@@ -3,9 +3,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import initPlanet3D from "@/components/3D/planet"
 import { MagicCard } from "@/components/ui/magic-card"
-import  MacbookScrollDemo from "@/components/macbook-scroll-demo"
-import { MacbookScroll } from "@/components/ui/macbook-scroll";
-
+import FloatingNavDemo from "@/components/floating-navbar-demo"
 
 export default function Home() {
 
@@ -23,9 +21,10 @@ export default function Home() {
   
   return (
     <div className="page">
+      <section><FloatingNavDemo></FloatingNavDemo></section>
       <section className="hero_main">
         <div className="content">
-          <h1 className="hero_main text-red-500">
+          <h1 className="hero_main text-black">
   Welcome To Mach10 Creative.
 </h1>
           <p>
@@ -36,8 +35,9 @@ export default function Home() {
         </div>
         <canvas className="planet-3D" />
       </section>
+
 <section> 
- <MacbookScrollDemo></MacbookScrollDemo>
+
 </section>
           
     </div>
