@@ -5,6 +5,7 @@ import initPlanet3D from "@/components/3D/planet"
 import { MagicCard } from "@/components/ui/magic-card"
 import FloatingNavDemo from "@/components/floating-navbar-demo"
 import {AmbientVideoModal} from "@/components/ambient-video-modal"
+import {3dPinModal} from "@/components/3d-pin-modal"
 
 export default function Home() {
 
@@ -41,7 +42,7 @@ export default function Home() {
       </section>
 
 <section> 
-<AmbientVideoModal
+  <AmbientVideoModal
   src="/videos/test.mp4"
   poster="/images/mach10-showreel-poster.jpg"
   title="Mach10 Creative Showreel"
@@ -52,7 +53,12 @@ export default function Home() {
   }
 />
 </section>
-          
-    </div>
+
+<section>
+
+
+</section>
+
+</div>
   );
 }
