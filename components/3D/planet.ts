@@ -9,7 +9,11 @@ import ScrollTrigger from "gsap/dist/ScrollTrigger";
 
 import * as THREE from "three";
 
-const initPlanet = (): { scene: THREE.Scene, renderer: THREE.WebGLRenderer } => {
+const initPlanet = (): {
+  scene: THREE.Scene;
+  renderer: THREE.WebGLRenderer;
+  cleanup: () => void;
+} => {
   const canvas = document.querySelector(
     "canvas.planet-3D",
   ) as HTMLCanvasElement;
@@ -17,11 +21,13 @@ const initPlanet = (): { scene: THREE.Scene, renderer: THREE.WebGLRenderer } => 
   // scene
   const scene = new THREE.Scene();
 
+  const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+
   // camera
   const size = {
     width: window.innerWidth,
     height: window.innerHeight,
-    pixelRation: window.devicePixelRatio,
+    pixelRatio,
   };
 
   const camera = new THREE.PerspectiveCamera(
@@ -38,7 +44,7 @@ const initPlanet = (): { scene: THREE.Scene, renderer: THREE.WebGLRenderer } => 
   // renderer
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.setSize(size.width, size.height);
-  renderer.setPixelRatio(size.pixelRation);
+  renderer.setPixelRatio(size.pixelRatio);
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -116,7 +122,7 @@ const initPlanet = (): { scene: THREE.Scene, renderer: THREE.WebGLRenderer } => 
 
   scene.add(earthGroup);
   gsap.registerPlugin(ScrollTrigger);
-  gsap
+  const heroTimeline = gsap
     .timeline({
       scrollTrigger: {
         trigger: ".hero_main",
@@ -151,27 +157,110 @@ const initPlanet = (): { scene: THREE.Scene, renderer: THREE.WebGLRenderer } => 
     );
 
 
-  // animation loop
-  gsap.ticker.add((time) => {
-    earth.rotation.y = time * 0.2;
+  let isRendering = false;
+  let animationFrameId = 0;
+
+  const animate = () => {
+    earth.rotation.y += 0.002;
     renderer.render(scene, camera);
-  });
+    animationFrameId = window.requestAnimationFrame(animate);
+  };
 
-  gsap.ticker.lagSmoothing(0);
+  const startRendering = () => {
+    if (isRendering) return;
 
-  window.addEventListener("resize", () => {
+    isRendering = true;
+    animationFrameId = window.requestAnimationFrame(animate);
+  };
+
+  const stopRendering = () => {
+    if (!isRendering) return;
+
+    isRendering = false;
+    window.cancelAnimationFrame(animationFrameId);
+    animationFrameId = 0;
+  };
+
+  const handleVisibility = () => {
+    if (document.hidden) {
+      stopRendering();
+      return;
+    }
+
+    const heroElement = document.querySelector(".hero_main") as HTMLElement | null;
+    const isHeroVisible = heroElement
+      ? heroElement.getBoundingClientRect().bottom > 0 &&
+        heroElement.getBoundingClientRect().top < window.innerHeight
+      : true;
+
+    if (isHeroVisible) {
+      startRendering();
+    } else {
+      stopRendering();
+    }
+  };
+
+  const handleResize = () => {
     size.width = window.innerWidth;
     size.height = window.innerHeight;
-    size.pixelRation = window.devicePixelRatio;
+    size.pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
 
     camera.aspect = size.width / size.height;
     camera.updateProjectionMatrix();
 
     renderer.setSize(size.width, size.height);
-    renderer.setPixelRatio(size.pixelRation);
-  });
+    renderer.setPixelRatio(size.pixelRatio);
+  };
 
-  return { scene, renderer };
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const [entry] = entries;
+
+      if (!entry) return;
+
+      if (entry.isIntersecting) {
+        startRendering();
+      } else {
+        stopRendering();
+      }
+    },
+    {
+      root: null,
+      rootMargin: "200px 0px",
+      threshold: 0.01,
+    },
+  );
+
+  const heroElement = document.querySelector(".hero_main") as HTMLElement | null;
+  if (heroElement) {
+    observer.observe(heroElement);
+  } else {
+    startRendering();
+  }
+
+  window.addEventListener("resize", handleResize);
+  document.addEventListener("visibilitychange", handleVisibility);
+  handleResize();
+  handleVisibility();
+
+  const cleanup = () => {
+    stopRendering();
+    observer.disconnect();
+    window.removeEventListener("resize", handleResize);
+    document.removeEventListener("visibilitychange", handleVisibility);
+    heroTimeline.scrollTrigger?.kill();
+    heroTimeline.kill();
+    renderer.dispose();
+    earthGeometry.dispose();
+    atmosphereGeometry.dispose();
+    earthMaterial.dispose();
+    atmosphereMaterial.dispose();
+    dayTexture.dispose();
+    nightTexture.dispose();
+    specularCloudsTexture.dispose();
+  };
+
+  return { scene, renderer, cleanup };
 };
 
 export default initPlanet;
