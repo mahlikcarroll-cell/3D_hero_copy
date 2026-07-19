@@ -436,10 +436,49 @@ body {
 
 .mach10-workspace {
   position: relative;
-  min-height: 100vh;
+
+  width: 100%;
+  height: 100vh;
+  
   overflow: hidden;
+
   background: #08111a;
   color: #e8f2ff;
+}
+
+.workspace-viewport {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+.workspace-world {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 4000px;
+  height: 2500px;
+
+  transform-origin: top left;
+}
+
+.workspace-scene {
+  position: absolute;
+  z-index: 1;
+}
+
+.workspace-scene-a {
+  left: 250px;
+  top: 220px;
+}
+.workspace-scene-b {
+  left: 2200px;
+  top: 1100px;
 }
 
 .workspace-background {
@@ -514,25 +553,13 @@ body {
   letter-spacing: 0.12em;
 }
 
-.workspace-content {
-  position: relative;
-  z-index: 1;
-
-  min-height: 100vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 6rem 2rem;
-}
-
 .workspace-test-card {
-  width: min(700px, 90vw);
+  width: 700px;
 
   padding: 3rem;
 
   border: 1px solid rgba(150, 205, 240, 0.2);
+
   background: rgba(8, 17, 26, 0.72);
 
   backdrop-filter: blur(12px);
@@ -570,4 +597,21 @@ body {
   line-height: 1.7;
 
   color: rgba(232, 242, 255, 0.7);
+}
+
+@theme inline {
+  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1
+    var(--delay, 0ms);
+
+  @keyframes cell-ripple {
+    0% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0.4;
+    }
+  }
 }
