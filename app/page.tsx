@@ -5,7 +5,7 @@ import FloatingNavDemo from "@/components/floating-navbar-demo"
 import {AmbientVideoModal} from "@/components/ambient-video-modal"
 import AnimatedPin from "@/components/3d-pin-demo";
 import SidewaysTextScroll from "@/components/mach10exclusive/sideways-text-scroll";
-import Mach10Workspace from "@/components/mach10exclusive/workspace/mach10-workspace";
+import Mach10WorkspaceExperience from "@/components/mach10exclusive/workspace/mach10-workspace-experience";
 import { TextAnimate } from "@/components/ui/text-animate";
 
 
@@ -54,9 +54,7 @@ export default function Home() {
   }
 />
 </section>
-<SidewaysTextScroll />
-
-<Mach10Workspace />
+<Mach10WorkspaceExperience />
 </div>)}
 {/*
 <section className="flex w-full justify-center overflow-visible px-6 py-24">

@@ -9,14 +9,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function SidewaysTextScroll() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!sectionRef.current || !headingRef.current) return;
-
+    if (!sectionRef.current || !trackRef.current) return;
+const rawTravel = window.innerWidth * 4.2;
+const snappedTravel =
+  Math.round(rawTravel / 56) * 56;
     const ctx = gsap.context(() => {
-      gsap.to(headingRef.current, {
-        x: "-420%",
+     gsap.to(trackRef.current, {
+  x: -snappedTravel,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
@@ -32,10 +34,9 @@ export default function SidewaysTextScroll() {
 
   return (
     <section ref={sectionRef} className="sideways-text-scroll">
-
-        
-      <h1 ref={headingRef}>Keep Your Momentum</h1>
-      
+      <div ref={trackRef} className="sideways-text-track">
+        <h1>Keep Your Momentum</h1>
+      </div>
     </section>
   );
 }

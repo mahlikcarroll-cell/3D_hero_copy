@@ -140,7 +140,7 @@ body {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background: #0b004a;
+  background: transparent;
 }
 
 .sideways-text-scroll h1 {
@@ -446,6 +446,113 @@ body {
   color: #e8f2ff;
 }
 
+.mach10-workspace-experience {
+  position: relative;
+  background: #08111a;
+  color: #e8f2ff;
+}
+
+.workspace-environment-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background-color: #08111a;
+
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(140, 190, 220, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(140, 190, 220, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to right,
+      rgba(140, 190, 220, 0.12) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(140, 190, 220, 0.12) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    56px 56px,
+    56px 56px,
+    224px 224px,
+    224px 224px;
+}
+
+.sideways-text-scroll {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  background: #08111a;
+}
+
+.sideways-text-track {
+  position: absolute;
+  inset: 0;
+
+  width: 600vw;
+  height: 100%;
+background-position:
+  -56px 20px,
+  -56px 20px,
+  -56px 20px,
+  -56px 20px;
+  background-color: #08111a;
+
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(140, 190, 220, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(140, 190, 220, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to right,
+      rgba(140, 190, 220, 0.12) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(140, 190, 220, 0.12) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    56px 56px,
+    56px 56px,
+    224px 224px,
+    224px 224px;
+}
+
+.sideways-text-track h1 {
+  color: #c8c8c8;
+  font-size: 40vw;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background-position:
+  0 0,
+  0 0,
+  0 0,
+  0 0;
+}
+
 .workspace-viewport {
   position: relative;
 
@@ -457,7 +564,6 @@ body {
 
 .workspace-world {
   position: absolute;
-
   top: 0;
   left: 0;
 
@@ -465,6 +571,42 @@ body {
   height: 2500px;
 
   transform-origin: top left;
+
+  background-color: #08111a;
+
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(140, 190, 220, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(140, 190, 220, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to right,
+      rgba(140, 190, 220, 0.12) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(140, 190, 220, 0.12) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    56px 56px,
+    56px 56px,
+    224px 224px,
+    224px 224px;
+
+  background-position:
+    0 0,
+    0 0,
+    0 0,
+    0 0;
 }
 
 .workspace-scene {
@@ -484,43 +626,7 @@ body {
 .workspace-background {
   position: absolute;
   inset: 0;
-
-  background-color: #08111a;
-
-  background-image:
-    /* minor vertical */
-    linear-gradient(
-      to right,
-      rgba(140, 190, 220, 0.06) 1px,
-      transparent 1px
-    ),
-
-    /* minor horizontal */
-    linear-gradient(
-      to bottom,
-      rgba(140, 190, 220, 0.06) 1px,
-      transparent 1px
-    ),
-
-    /* major vertical */
-    linear-gradient(
-      to right,
-      rgba(140, 190, 220, 0.12) 1px,
-      transparent 1px
-    ),
-
-    /* major horizontal */
-    linear-gradient(
-      to bottom,
-      rgba(140, 190, 220, 0.12) 1px,
-      transparent 1px
-    );
-
-  background-size:
-    56px 56px,
-    56px 56px,
-    224px 224px,
-    224px 224px;
+  pointer-events: none;
 }
 .workspace-ripple-layer {
   position: absolute;
@@ -532,7 +638,7 @@ body {
 
     margin-left: -56px;
   margin-top: -56px;
-  
+
   z-index: 0;
   overflow: hidden;
 }
