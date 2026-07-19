@@ -484,38 +484,58 @@ body {
 .workspace-background {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-  pointer-events: none;
 
   background-color: #08111a;
 
   background-image:
+    /* minor vertical */
     linear-gradient(
-      rgba(112, 174, 220, 0.08) 1px,
+      to right,
+      rgba(140, 190, 220, 0.06) 1px,
       transparent 1px
     ),
+
+    /* minor horizontal */
     linear-gradient(
-      90deg,
-      rgba(112, 174, 220, 0.08) 1px,
+      to bottom,
+      rgba(140, 190, 220, 0.06) 1px,
       transparent 1px
     ),
+
+    /* major vertical */
     linear-gradient(
-      rgba(112, 174, 220, 0.035) 1px,
+      to right,
+      rgba(140, 190, 220, 0.12) 1px,
       transparent 1px
     ),
+
+    /* major horizontal */
     linear-gradient(
-      90deg,
-      rgba(112, 174, 220, 0.035) 1px,
+      to bottom,
+      rgba(140, 190, 220, 0.12) 1px,
       transparent 1px
     );
 
   background-size:
-    160px 160px,
-    160px 160px,
-    32px 32px,
-    32px 32px;
+    56px 56px,
+    56px 56px,
+    224px 224px,
+    224px 224px;
 }
+.workspace-ripple-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
 
+  width: calc(100vw + 112px);
+  height: calc(100vh + 112px);
+
+    margin-left: -56px;
+  margin-top: -56px;
+  
+  z-index: 0;
+  overflow: hidden;
+}
 .workspace-background::after {
   content: "";
   position: absolute;

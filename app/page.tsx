@@ -7,7 +7,7 @@ import AnimatedPin from "@/components/3d-pin-demo";
 import SidewaysTextScroll from "@/components/mach10exclusive/sideways-text-scroll";
 import Mach10Workspace from "@/components/mach10exclusive/workspace/mach10-workspace";
 import { TextAnimate } from "@/components/ui/text-animate";
-import BackgroundRippleEffectDemo from "@/components/background-ripple-effect-demo";
+
 
 export default function Home() {
 
@@ -41,9 +41,7 @@ export default function Home() {
         <canvas className="planet-3D" />
       </section>
 
-<section className="background-ripple">
-  <BackgroundRippleEffectDemo />
-</section>
+
 <section> 
   <AmbientVideoModal
   src="/videos/test.mp4"

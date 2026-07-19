@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 export const BackgroundRippleEffect = ({
@@ -11,13 +11,9 @@ export const BackgroundRippleEffect = ({
   cols?: number;
   cellSize?: number;
 }) => {
-  const [clickedCell, setClickedCell] = useState<{
-    row: number;
-    col: number;
-  } | null>(null);
-  const [rippleKey, setRippleKey] = useState(0);
-  const ref = useRef<any>(null);
 
+  const ref = useRef<any>(null);
+  
   return (
     <div
       ref={ref}
@@ -30,18 +26,13 @@ export const BackgroundRippleEffect = ({
       <div className="relative h-auto w-auto overflow-hidden">
         <div className="pointer-events-none absolute inset-0 z-[2] h-full w-full overflow-hidden" />
         <DivGrid
-          key={`base-${rippleKey}`}
+          
           className="mask-radial-from-20% mask-radial-at-top opacity-600"
           rows={rows}
           cols={cols}
           cellSize={cellSize}
           borderColor="var(--cell-border-color)"
           fillColor="var(--cell-fill-color)"
-          clickedCell={clickedCell}
-          onCellClick={(row, col) => {
-            setClickedCell({ row, col });
-            setRippleKey((k) => k + 1);
-          }}
           interactive
         />
       </div>
@@ -56,15 +47,9 @@ type DivGridProps = {
   cellSize: number; // in pixels
   borderColor: string;
   fillColor: string;
-  clickedCell: { row: number; col: number } | null;
-  onCellClick?: (row: number, col: number) => void;
   interactive?: boolean;
 };
 
-type CellStyle = React.CSSProperties & {
-  ["--delay"]?: string;
-  ["--duration"]?: string;
-};
 
 const DivGrid = ({
   className,
@@ -73,15 +58,13 @@ const DivGrid = ({
   cellSize = 56,
   borderColor = "#3f3f46",
   fillColor = "rgba(14,165,233,0.3)",
-  clickedCell = null,
-  onCellClick = () => {},
   interactive = true,
 }: DivGridProps) => {
   const cells = useMemo(
     () => Array.from({ length: rows * cols }, (_, idx) => idx),
     [rows, cols],
   );
-
+const gridRef = useRef<HTMLDivElement>(null);
   const gridStyle: React.CSSProperties = {
     display: "grid",
     gridTemplateColumns: `repeat(${cols}, ${cellSize}px)`,
@@ -91,40 +74,68 @@ const DivGrid = ({
     marginInline: "auto",
   };
 
+const triggerRipple = (clickedRow: number, clickedCol: number) => {
+  if (!gridRef.current) return;
+
+  const cellElements =
+    gridRef.current.querySelectorAll<HTMLElement>(".cell");
+
+  cellElements.forEach((cell, idx) => {
+    const rowIdx = Math.floor(idx / cols);
+    const colIdx = idx % cols;
+
+    const distance = Math.hypot(
+      clickedRow - rowIdx,
+      clickedCol - colIdx
+    );
+
+    const delay = Math.max(0, distance * 55);
+    const duration = 200 + distance * 80;
+
+    cell.animate(
+  [
+    { opacity: 0 },
+    { opacity: 0.8 },
+    { opacity: 0 },
+  ],
+  {
+    duration,
+    delay,
+    easing: "ease-out",
+  }
+);
+  });
+};
+
   return (
-    <div className={cn("relative z-[3]", className)} style={gridStyle}>
+    <div
+  ref={gridRef}
+  className={cn("relative z-[3]", className)}
+  style={gridStyle}
+>
       {cells.map((idx) => {
         const rowIdx = Math.floor(idx / cols);
         const colIdx = idx % cols;
-        const distance = clickedCell
-          ? Math.hypot(clickedCell.row - rowIdx, clickedCell.col - colIdx)
-          : 0;
-        const delay = clickedCell ? Math.max(0, distance * 55) : 0; // ms
-        const duration = 200 + distance * 80; // ms
-
-        const style: CellStyle = clickedCell
-          ? {
-              "--delay": `${delay}ms`,
-              "--duration": `${duration}ms`,
-            }
-          : {};
 
         return (
           <div
             key={idx}
             className={cn(
-              "cell relative border-[0.5px] opacity-40 transition-opacity duration-150 will-change-transform hover:opacity-80 dark:shadow-[0px_0px_40px_1px_var(--cell-shadow-color)_inset]",
-              clickedCell && "animate-cell-ripple [animation-fill-mode:none]",
+              "cell relative border-[0.5px] opacity-0 transition-opacity duration-150 hover:opacity-20 dark:shadow-[0px_0px_40px_1px_var(--cell-shadow-color)_inset]",
+              
               !interactive && "pointer-events-none",
             )}
             style={{
-              backgroundColor: fillColor,
-              borderColor: borderColor,
-              ...style,
-            }}
-            onClick={
-              interactive ? () => onCellClick?.(rowIdx, colIdx) : undefined
-            }
+  backgroundColor: fillColor,
+  borderColor: borderColor,
+}}
+           onClick={
+  interactive
+    ? () => {
+        triggerRipple(rowIdx, colIdx);
+      }
+    : undefined
+}
           />
         );
       })}
