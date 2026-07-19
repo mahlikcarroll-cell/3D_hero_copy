@@ -433,3 +433,141 @@ body {
     padding: 0 1rem 4rem;
   }
 }
+
+.mach10-workspace {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #08111a;
+  color: #e8f2ff;
+}
+
+.workspace-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  background-color: #08111a;
+
+  background-image:
+    linear-gradient(
+      rgba(112, 174, 220, 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(112, 174, 220, 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      rgba(112, 174, 220, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(112, 174, 220, 0.035) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    160px 160px,
+    160px 160px,
+    32px 32px,
+    32px 32px;
+}
+
+.workspace-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 35%,
+      rgba(0, 0, 0, 0.35) 100%
+    );
+
+  pointer-events: none;
+}
+
+.workspace-blueprint-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.blueprint-guides {
+  fill: none;
+  stroke: rgba(116, 190, 240, 0.18);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.blueprint-guides text {
+  fill: rgba(145, 205, 245, 0.3);
+  stroke: none;
+  font-family: monospace;
+  font-size: 18px;
+  letter-spacing: 0.12em;
+}
+
+.workspace-content {
+  position: relative;
+  z-index: 1;
+
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6rem 2rem;
+}
+
+.workspace-test-card {
+  width: min(700px, 90vw);
+
+  padding: 3rem;
+
+  border: 1px solid rgba(150, 205, 240, 0.2);
+  background: rgba(8, 17, 26, 0.72);
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.35);
+
+  border-radius: 1rem;
+}
+
+.workspace-test-card span {
+  display: block;
+  margin-bottom: 1rem;
+
+  font-family: monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+
+  color: rgba(145, 205, 245, 0.65);
+}
+
+.workspace-test-card h2 {
+  margin: 0 0 1rem;
+
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.95;
+}
+
+.workspace-test-card p {
+  max-width: 40rem;
+
+  margin: 0;
+
+  font-size: 1.1rem;
+  line-height: 1.7;
+
+  color: rgba(232, 242, 255, 0.7);
+}
