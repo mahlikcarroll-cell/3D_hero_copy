@@ -1,10 +1,11 @@
 "use client";
-
+import "@/styles/pages/blueprint.css";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import WorkspaceBackground from "./workspace-background";
 import WorkspaceRippleLayer from "./workspace-ripple-layer";
+import SystemBlueprintScene from "@/components/mach10exclusive/workspace/system-blueprint-scene";
 gsap.registerPlugin(ScrollTrigger);
 
 const CELL_SIZE = 56;
@@ -70,7 +71,7 @@ const sceneBTargetX =
 const sceneBTargetY =
   viewportCenterY - sceneBCenterY;
 
-const momentumTargetX = -1600;
+const momentumTargetX = -4032;
 const momentumTargetY = 0;
 
 const updateRipplePosition = () => {
@@ -114,24 +115,31 @@ const ctx = gsap.context(() => {
   });
 
   timeline
-    .to(worldRef.current, {
-      x: momentumTargetX,
-      y: momentumTargetY,
-      duration: 1,
-      onUpdate: updateRipplePosition,
-    })
-    .to(worldRef.current, {
-      x: sceneATargetX,
-      y: sceneATargetY,
-      duration: 1,
-      onUpdate: updateRipplePosition,
-    })
-    .to(worldRef.current, {
-      x: sceneBTargetX,
-      y: sceneBTargetY,
-      duration: 2,
-      onUpdate: updateRipplePosition,
-    });
+  .to(worldRef.current, {
+    x: momentumTargetX,
+    y: momentumTargetY,
+    duration: 1.5,
+    ease: "power2.in",
+    onUpdate: updateRipplePosition,
+  })
+
+
+  // Then settle vertically into Scene A
+  .to(worldRef.current, {
+    x: sceneATargetX,
+    y: sceneATargetY,
+    duration: 0.35,
+    ease: "power1.out",
+    onUpdate: updateRipplePosition,
+  })
+
+  .to(worldRef.current, {
+    x: sceneBTargetX,
+    y: sceneBTargetY,
+    duration: 2,
+    ease: "none",
+    onUpdate: updateRipplePosition,
+  });
 }, workspaceRef);
 
 return () => ctx.revert();
@@ -154,23 +162,14 @@ return (
           </h1>
         </div>
 
-        <div
-          ref={sceneARef}
-          className="workspace-scene workspace-scene-a"
-        >
-          <div
-            ref={sceneACardRef}
-            className="workspace-test-card"
-          >
-            <span>M10 // SCENE A</span>
-
-            <h2>Built for momentum.</h2>
-
-            <p>
-              This is the starting position inside the Mach10 workspace.
-            </p>
-          </div>
-        </div>
+       <div ref={sceneARef} className="workspace-scene-a">
+  <div
+    ref={sceneACardRef}
+    className="workspace-scene-a-card"
+  >
+    <SystemBlueprintScene />
+  </div>
+</div>
 
         <div
           ref={sceneBRef}

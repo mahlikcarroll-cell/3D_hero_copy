@@ -1,0 +1,229 @@
+.system-blueprint-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.system-blueprint-visual {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.system-blueprint-base,
+.system-blueprint-glow {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.system-blueprint-base {
+  opacity: 0.1;
+}
+
+.system-blueprint-glow {
+  opacity: 0;
+}
+
+.system-blueprint-glow {
+  opacity: 0;
+
+  mask-image: radial-gradient(
+    circle at var(--spotlight-x) var(--spotlight-y),
+    black 0%,
+    black 18%,
+    transparent var(--spotlight-size)
+  );
+
+  transition:
+    opacity 220ms ease,
+    filter 220ms ease;
+
+  filter:
+    brightness(1.8)
+    saturate(1.4);
+
+  mix-blend-mode: screen;
+}
+
+.system-blueprint-scene.is-active
+.system-blueprint-glow {
+  opacity: 1;
+}
+
+/*Blueprint node before */
+.system-blueprint-nodes {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  width: 150px;
+  min-height: 58px;
+
+  padding: 16px 18px;
+
+  border: 1px solid rgba(126, 203, 255, 0.22);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.035),
+      transparent 50%
+    ),
+    rgba(8, 14, 22, 0.88);
+
+  color: white;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    width 260ms ease,
+    min-height 260ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.system-blueprint-node {
+  position: absolute;
+  z-index: 2;
+
+  width: 150px;
+  min-height: 58px;
+
+  padding: 16px 18px;
+
+  border: 1px solid rgba(126, 203, 255, 0.22);
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.035),
+      transparent 50%
+    ),
+    rgba(8, 14, 22, 0.88);
+
+  color: white;
+  font: inherit;
+
+  cursor: pointer;
+  overflow: hidden;
+
+  transition:
+    width 260ms ease,
+    min-height 260ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+/* Blueprint node after */
+
+.system-blueprint-node-copy {
+  display: block;
+
+  max-height: 0;
+  margin-top: 0;
+
+  opacity: 0;
+
+  overflow: hidden;
+
+  transition:
+    max-height 260ms ease,
+    opacity 200ms ease,
+    margin-top 260ms ease;
+}
+
+/* Blueprint node hover */
+
+.system-blueprint-node:hover,
+.system-blueprint-node:focus-visible {
+  width: 260px;
+  min-height: 110px;
+
+  border-color: rgba(126, 228, 255, 0.58);
+
+  box-shadow:
+    0 0 34px rgba(80, 180, 255, 0.16);
+}
+
+.system-blueprint-node:hover,
+.system-blueprint-node:focus-visible {
+  width: 260px;
+  min-height: 110px;
+
+  border-color: rgba(126, 228, 255, 0.58);
+
+  box-shadow:
+    0 0 34px rgba(80, 180, 255, 0.16);
+}
+
+.system-blueprint-node:hover .system-blueprint-node-copy,
+.system-blueprint-node:focus-visible .system-blueprint-node-copy {
+  max-height: 70px;
+  margin-top: 10px;
+  opacity: 1;
+}
+
+.workspace-scene-a-card {
+  position: relative;
+  width: 1200px;
+  height: 800px;
+}
+
+/* Blueprint card positioning */
+.system-blueprint-node--attract {
+  top: 12%;
+  left: 14%;
+}
+
+.system-blueprint-node--capture {
+  top: 35%;
+  left: 26%;
+}
+
+.system-blueprint-node--respond {
+  top: 22%;
+  left: 54%;
+}
+
+.system-blueprint-node--nurture {
+  top: 52%;
+  left: 72%;
+}
+
+.system-blueprint-node--convert {
+  top: 70%;
+  left: 50%;
+}
+
+.system-blueprint-node--learn {
+  top: 66%;
+  left: 18%;
+}
+
+.system-blueprint-node-title {
+  display: block;
+  font-weight: 700;
+}
+
+.system-blueprint-node-copy {
+  display: block;
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  transition:
+    max-height 260ms ease,
+    opacity 200ms ease,
+    margin-top 260ms ease;
+}
