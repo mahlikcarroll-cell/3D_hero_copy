@@ -143,14 +143,6 @@ body {
   background: transparent;
 }
 
-.sideways-text-scroll h1 {
-  color: #c8c8c8;
-  font-size: 40vw;
-  line-height: 1;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
 .page {
   background: linear-gradient(180deg, #f8f8fc 0%, #f3f5ff 100%);
   color: #111111;
@@ -246,7 +238,9 @@ body {
   border-radius: 24px;
   padding: 1.5rem;
   box-shadow: 0 12px 30px rgba(17, 17, 17, 0.04);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .info-card::before {
@@ -403,7 +397,9 @@ body {
   padding: 0.8rem 1.2rem;
   border-radius: 999px;
   font-weight: 600;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .cta-strip .cta_btn:hover {
@@ -439,7 +435,7 @@ body {
 
   width: 100%;
   height: 100vh;
-  
+
   overflow: hidden;
 
   background: #08111a;
@@ -447,46 +443,14 @@ body {
 }
 
 .mach10-workspace-experience {
+  --grid-minor: 56px;
+  --grid-major: 224px;
+  --grid-origin-x: 0px;
+  --grid-origin-y: 0px;
+
   position: relative;
   background: #08111a;
   color: #e8f2ff;
-}
-
-.workspace-environment-grid {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-
-  background-color: #08111a;
-
-  background-image:
-    linear-gradient(
-      to right,
-      rgba(140, 190, 220, 0.06) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(140, 190, 220, 0.06) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to right,
-      rgba(140, 190, 220, 0.12) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(140, 190, 220, 0.12) 1px,
-      transparent 1px
-    );
-
-  background-size:
-    56px 56px,
-    56px 56px,
-    224px 224px,
-    224px 224px;
 }
 
 .sideways-text-scroll {
@@ -504,40 +468,25 @@ body {
 
   width: 600vw;
   height: 100%;
-background-position:
-  -56px 20px,
-  -56px 20px,
-  -56px 20px,
-  -56px 20px;
   background-color: #08111a;
 
   background-image:
-    linear-gradient(
-      to right,
-      rgba(140, 190, 220, 0.06) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(140, 190, 220, 0.06) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to right,
-      rgba(140, 190, 220, 0.12) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(140, 190, 220, 0.12) 1px,
-      transparent 1px
-    );
+    linear-gradient(to right, rgba(140, 190, 220, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 190, 220, 0.06) 1px, transparent 1px),
+    linear-gradient(to right, rgba(140, 190, 220, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 190, 220, 0.12) 1px, transparent 1px);
+
+  background-position:
+    var(--grid-origin-x) var(--grid-origin-y),
+    var(--grid-origin-x) var(--grid-origin-y),
+    var(--grid-origin-x) var(--grid-origin-y),
+    var(--grid-origin-x) var(--grid-origin-y);
 
   background-size:
-    56px 56px,
-    56px 56px,
-    224px 224px,
-    224px 224px;
+    var(--grid-minor) var(--grid-minor),
+    var(--grid-minor) var(--grid-minor),
+    var(--grid-major) var(--grid-major),
+    var(--grid-major) var(--grid-major);
 }
 
 .sideways-text-track h1 {
@@ -546,11 +495,6 @@ background-position:
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
-  background-position:
-  0 0,
-  0 0,
-  0 0,
-  0 0;
 }
 
 .workspace-viewport {
@@ -575,38 +519,22 @@ background-position:
   background-color: #08111a;
 
   background-image:
-    linear-gradient(
-      to right,
-      rgba(140, 190, 220, 0.06) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(140, 190, 220, 0.06) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to right,
-      rgba(140, 190, 220, 0.12) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(140, 190, 220, 0.12) 1px,
-      transparent 1px
-    );
-
-  background-size:
-    56px 56px,
-    56px 56px,
-    224px 224px,
-    224px 224px;
+    linear-gradient(to right, rgba(140, 190, 220, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 190, 220, 0.06) 1px, transparent 1px),
+    linear-gradient(to right, rgba(140, 190, 220, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 190, 220, 0.12) 1px, transparent 1px);
 
   background-position:
-    0 0,
-    0 0,
-    0 0,
-    0 0;
+    var(--grid-origin-x) var(--grid-origin-y),
+    var(--grid-origin-x) var(--grid-origin-y),
+    var(--grid-origin-x) var(--grid-origin-y),
+    var(--grid-origin-x) var(--grid-origin-y);
+
+  background-size:
+    var(--grid-minor) var(--grid-minor),
+    var(--grid-minor) var(--grid-minor),
+    var(--grid-major) var(--grid-major),
+    var(--grid-major) var(--grid-major);
 }
 
 .workspace-scene {
@@ -636,7 +564,7 @@ background-position:
   width: calc(100vw + 112px);
   height: calc(100vh + 112px);
 
-    margin-left: -56px;
+  margin-left: -56px;
   margin-top: -56px;
 
   z-index: 0;
@@ -647,12 +575,11 @@ background-position:
   position: absolute;
   inset: 0;
 
-  background:
-    radial-gradient(
-      circle at center,
-      transparent 35%,
-      rgba(0, 0, 0, 0.35) 100%
-    );
+  background: radial-gradient(
+    circle at center,
+    transparent 35%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
 
   pointer-events: none;
 }
@@ -690,8 +617,7 @@ background-position:
 
   backdrop-filter: blur(12px);
 
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
 
   border-radius: 1rem;
 }
