@@ -511,7 +511,7 @@ body {
   top: 0;
   left: 0;
 
-  width: 4000px;
+  width: 6720px;
   height: 2500px;
 
   transform-origin: top left;
@@ -549,7 +549,7 @@ body {
 .workspace-momentum-heading {
   margin: 0;
   color: #c8c8c8;
-  font-size: clamp(7rem, 12vw, 12rem);
+  font-size: clamp(14rem, 24vw, 28rem);
   line-height: 0.95;
   text-transform: uppercase;
   white-space: nowrap;
@@ -561,7 +561,7 @@ body {
 }
 
 .workspace-scene-a {
-  left: 2600px;
+  left: 5040px;
   top: 220px;
 }
 .workspace-scene-b {

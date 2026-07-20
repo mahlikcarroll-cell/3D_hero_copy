@@ -12,103 +12,185 @@ const CELL_SIZE = 56;
 export default function Mach10Workspace() {
   const worldRef = useRef<HTMLDivElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
+
+  const momentumRef = useRef<HTMLDivElement>(null);
+
+  const sceneARef = useRef<HTMLDivElement>(null);
+  const sceneACardRef = useRef<HTMLDivElement>(null);
+
   const sceneBRef = useRef<HTMLDivElement>(null);
   const sceneBCardRef = useRef<HTMLDivElement>(null);
+
   const rippleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (
-      !worldRef.current ||
-      !workspaceRef.current ||
-      !sceneBRef.current ||
-      !sceneBCardRef.current
-    )
-      return;
+  !worldRef.current ||
+  !workspaceRef.current ||
+  !momentumRef.current ||
+  !sceneARef.current ||
+  !sceneACardRef.current ||
+  !sceneBRef.current ||
+  !sceneBCardRef.current
+) {
+  return;
+}
+const sceneA = sceneARef.current;
+const sceneACard = sceneACardRef.current;
 
-    const sceneB = sceneBRef.current;
-    const sceneBCard = sceneBCardRef.current;
+const sceneB = sceneBRef.current;
+const sceneBCard = sceneBCardRef.current;
 
-    const sceneCenterX = sceneB.offsetLeft + sceneBCard.offsetWidth / 2;
+const viewportCenterX = window.innerWidth / 2;
+const viewportCenterY = window.innerHeight / 2;
 
-    const sceneCenterY = sceneB.offsetTop + sceneBCard.offsetHeight / 2;
+// Scene A camera destination
+const sceneACenterX =
+  sceneA.offsetLeft + sceneACard.offsetWidth / 2;
 
-    const viewportCenterX = window.innerWidth / 2;
-    const viewportCenterY = window.innerHeight / 2;
+const sceneACenterY =
+  sceneA.offsetTop + sceneACard.offsetHeight / 2;
 
-    const targetX = viewportCenterX - sceneCenterX;
-    const targetY = viewportCenterY - sceneCenterY;
+const sceneATargetX =
+  viewportCenterX - sceneACenterX;
 
-    const ctx = gsap.context(() => {
-      gsap.to(worldRef.current, {
-        x: targetX,
-        y: targetY,
+const sceneATargetY =
+  viewportCenterY - sceneACenterY;
 
-        onUpdate: () => {
-          if (!rippleRef.current || !worldRef.current) return;
+// Scene B camera destination
+const sceneBCenterX =
+  sceneB.offsetLeft + sceneBCard.offsetWidth / 2;
 
-          const worldX = gsap.getProperty(worldRef.current, "x") as number;
+const sceneBCenterY =
+  sceneB.offsetTop + sceneBCard.offsetHeight / 2;
 
-          const worldY = gsap.getProperty(worldRef.current, "y") as number;
+const sceneBTargetX =
+  viewportCenterX - sceneBCenterX;
 
-          const cameraX = -worldX;
-          const cameraY = -worldY;
+const sceneBTargetY =
+  viewportCenterY - sceneBCenterY;
 
-          const snappedX = Math.floor(cameraX / CELL_SIZE) * CELL_SIZE;
+const momentumTargetX = -1600;
+const momentumTargetY = 0;
 
-          const snappedY = Math.floor(cameraY / CELL_SIZE) * CELL_SIZE;
+const updateRipplePosition = () => {
+  if (!rippleRef.current || !worldRef.current) return;
 
-          gsap.set(rippleRef.current, {
-            x: snappedX,
-            y: snappedY,
-          });
-        },
+  const worldX = gsap.getProperty(
+    worldRef.current,
+    "x"
+  ) as number;
 
-        scrollTrigger: {
-          trigger: workspaceRef.current,
-          start: "top top",
-          end: "+=200%",
-          scrub: 2,
-          pin: true,
-        },
-      });
-    }, workspaceRef);
+  const worldY = gsap.getProperty(
+    worldRef.current,
+    "y"
+  ) as number;
 
-    return () => ctx.revert();
-  }, []);
+  const cameraX = -worldX;
+  const cameraY = -worldY;
 
-  return (
-    <section ref={workspaceRef} className="mach10-workspace">
-      <div className="workspace-viewport">
-        <div ref={worldRef} className="workspace-world">
-          <WorkspaceBackground />
+  const snappedX =
+    Math.floor(cameraX / CELL_SIZE) * CELL_SIZE;
 
-          <WorkspaceRippleLayer ref={rippleRef} />
+  const snappedY =
+    Math.floor(cameraY / CELL_SIZE) * CELL_SIZE;
 
-          <div className="workspace-momentum-zone">
-            <h1 className="workspace-momentum-heading">Keep Your Momentum</h1>
+  gsap.set(rippleRef.current, {
+    x: snappedX,
+    y: snappedY,
+  });
+};    
+
+
+const ctx = gsap.context(() => {
+  const timeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: workspaceRef.current,
+      start: "top top",
+      end: "+=300%",
+      scrub: 2,
+      pin: true,
+    },
+  });
+
+  timeline
+    .to(worldRef.current, {
+      x: momentumTargetX,
+      y: momentumTargetY,
+      duration: 1,
+      onUpdate: updateRipplePosition,
+    })
+    .to(worldRef.current, {
+      x: sceneATargetX,
+      y: sceneATargetY,
+      duration: 1,
+      onUpdate: updateRipplePosition,
+    })
+    .to(worldRef.current, {
+      x: sceneBTargetX,
+      y: sceneBTargetY,
+      duration: 2,
+      onUpdate: updateRipplePosition,
+    });
+}, workspaceRef);
+
+return () => ctx.revert();
+}, []);
+
+return (
+  <section ref={workspaceRef} className="mach10-workspace">
+    <div className="workspace-viewport">
+      <div ref={worldRef} className="workspace-world">
+        <WorkspaceBackground />
+
+        <WorkspaceRippleLayer ref={rippleRef} />
+
+        <div
+          ref={momentumRef}
+          className="workspace-momentum-zone"
+        >
+          <h1 className="workspace-momentum-heading">
+            Keep Your Momentum.
+          </h1>
+        </div>
+
+        <div
+          ref={sceneARef}
+          className="workspace-scene workspace-scene-a"
+        >
+          <div
+            ref={sceneACardRef}
+            className="workspace-test-card"
+          >
+            <span>M10 // SCENE A</span>
+
+            <h2>Built for momentum.</h2>
+
+            <p>
+              This is the starting position inside the Mach10 workspace.
+            </p>
           </div>
+        </div>
 
-          <div className="workspace-scene workspace-scene-a">
-            <div className="workspace-test-card">
-              <span>M10 // SCENE A</span>
+        <div
+          ref={sceneBRef}
+          className="workspace-scene workspace-scene-b"
+        >
+          <div
+            ref={sceneBCardRef}
+            className="workspace-test-card"
+          >
+            <span>M10 // SCENE B</span>
 
-              <h2>Built for momentum.</h2>
+            <h2>Second workspace zone.</h2>
 
-              <p>This is the starting position inside the Mach10 workspace.</p>
-            </div>
-          </div>
-
-          <div ref={sceneBRef} className="workspace-scene workspace-scene-b">
-            <div ref={sceneBCardRef} className="workspace-test-card">
-              <span>M10 // SCENE B</span>
-
-              <h2>Second workspace zone.</h2>
-
-              <p>This scene exists farther across the same virtual surface.</p>
-            </div>
+            <p>
+              This scene exists farther across the same virtual surface.
+            </p>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
 }

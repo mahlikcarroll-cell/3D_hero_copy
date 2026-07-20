@@ -6,7 +6,6 @@ import Mach10Workspace from "./mach10-workspace";
 export default function Mach10WorkspaceExperience() {
   return (
     <div className="mach10-workspace-experience">
-      <SidewaysTextScroll />
       <Mach10Workspace />
     </div>
   );
