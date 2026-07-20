@@ -537,13 +537,31 @@ body {
     var(--grid-major) var(--grid-major);
 }
 
+.workspace-momentum-zone {
+  position: absolute;
+  left: 180px;
+  top: 140px;
+  z-index: 1;
+  width: 2200px;
+  height: 700px;
+}
+
+.workspace-momentum-heading {
+  margin: 0;
+  color: #c8c8c8;
+  font-size: clamp(7rem, 12vw, 12rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .workspace-scene {
   position: absolute;
   z-index: 1;
 }
 
 .workspace-scene-a {
-  left: 250px;
+  left: 2600px;
   top: 220px;
 }
 .workspace-scene-b {
