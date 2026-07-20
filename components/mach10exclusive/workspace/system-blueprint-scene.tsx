@@ -100,18 +100,18 @@ export default function SystemBlueprintScene() {
     <div>
   <div className="system-blueprint-visual">
   <img
-    src="/blueprint/system-base.svg"
-    className="system-blueprint-base"
-    alt=""
-    aria-hidden="true"
-  />
+  src="/images/blueprint/blueprint-base.svg"
+  className="system-blueprint-base"
+  alt=""
+  aria-hidden="true"
+/>
 
-  <img
-    src="/blueprint/system-lines.svg"
-    className="system-blueprint-glow"
-    alt=""
-    aria-hidden="true"
-  />
+<img
+  src="/images/blueprint/blueprint-lines.svg"
+  className="system-blueprint-glow"
+  alt=""
+  aria-hidden="true"
+/>
 </div>
     
     <div

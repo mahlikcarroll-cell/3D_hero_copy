@@ -162,7 +162,10 @@ return (
           </h1>
         </div>
 
-       <div ref={sceneARef} className="workspace-scene-a">
+       <div
+  ref={sceneARef}
+  className="workspace-scene workspace-scene-a"
+>
   <div
     ref={sceneACardRef}
     className="workspace-scene-a-card"
