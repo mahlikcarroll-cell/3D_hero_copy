@@ -95,69 +95,58 @@ export default function SystemBlueprintScene() {
   ? blueprintRegions[activeStage]
   : null;
 
-  return (
-    
-    <div>
-  <div className="system-blueprint-visual">
-  <img
-  src="/images/blueprint/blueprint-base.svg"
-  className="system-blueprint-base"
-  alt=""
-  aria-hidden="true"
-/>
+return (
+  <div
+    className={`system-blueprint-scene ${
+      activeStage ? "is-active" : ""
+    }`}
+    style={
+      {
+        "--spotlight-x": `${activeRegion?.x ?? 50}%`,
+        "--spotlight-y": `${activeRegion?.y ?? 50}%`,
+        "--spotlight-size": `${activeRegion?.size ?? 0}%`,
+      } as React.CSSProperties
+    }
+  >
+    {/* Blueprint visual layers */}
+    <div className="system-blueprint-visual">
+      <img
+        src="/images/blueprint/blueprint-base.svg"
+        className="system-blueprint-base"
+        alt=""
+        aria-hidden="true"
+      />
 
-<img
-  src="/images/blueprint/blueprint-lines.svg"
-  className="system-blueprint-glow"
-  alt=""
-  aria-hidden="true"
-/>
-</div>
-    
-    <div
-  className={`system-blueprint-scene ${
-    activeStage ? "is-active" : ""
-  }`}
-  style={
-    {
-      "--spotlight-x": `${activeRegion?.x ?? 50}%`,
-      "--spotlight-y": `${activeRegion?.y ?? 50}%`,
-      "--spotlight-size": `${activeRegion?.size ?? 0}%`,
-    } as React.CSSProperties
-  }
->
-      {/* blueprint */}
-
-      {/* cards */}
+      <img
+        src="/images/blueprint/blueprint-lines.svg"
+        className="system-blueprint-glow"
+        alt=""
+        aria-hidden="true"
+      />
     </div>
 
-<div className="system-blueprint-nodes">
-  {stages.map((stage) => (
-    <button
-      key={stage.id}
-      type="button"
-      className={`system-blueprint-node system-blueprint-node--${stage.id}`}
-      onMouseEnter={() => setActiveStage(stage.id)}
-      onMouseLeave={() => setActiveStage(null)}
-      onFocus={() => setActiveStage(stage.id)}
-      onBlur={() => setActiveStage(null)}
-    >
-      <span className="system-blueprint-node-title">
-        {stage.label}
-      </span>
+    {/* Blueprint interaction nodes */}
+    <div className="system-blueprint-nodes">
+      {stages.map((stage) => (
+        <button
+          key={stage.id}
+          type="button"
+          className={`system-blueprint-node system-blueprint-node--${stage.id}`}
+          onMouseEnter={() => setActiveStage(stage.id)}
+          onMouseLeave={() => setActiveStage(null)}
+          onFocus={() => setActiveStage(stage.id)}
+          onBlur={() => setActiveStage(null)}
+        >
+          <span className="system-blueprint-node-title">
+            {stage.label}
+          </span>
 
-      <span className="system-blueprint-node-copy">
-        {stage.copy}
-      </span>
-    </button>
-  ))}
-</div>
-
- </div>
- 
-
-
- 
-
+          <span className="system-blueprint-node-copy">
+            {stage.copy}
+          </span>
+        </button>
+      ))}
+    </div>
+  </div>
 );
 }

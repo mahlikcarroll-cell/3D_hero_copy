@@ -1,3 +1,8 @@
+/* =========================================================
+   SYSTEM BLUEPRINT SCENE
+   Main positioning context for the Scene A blueprint system.
+   ========================================================= */
+
 .system-blueprint-scene {
   position: relative;
   width: 100%;
@@ -5,31 +10,61 @@
   overflow: visible;
 }
 
+
+/* =========================================================
+   BLUEPRINT VISUAL LAYERS
+   Viewport-sized background centered on Scene A.
+   Independent of the card positioning canvas.
+   ========================================================= */
+
 .system-blueprint-visual {
   position: absolute;
-  inset: 0;
+
+  left: 50%;
+  top: 50%;
+
+  width: 100vw;
+  height: 100vh;
+
+  transform: translate(-50%, -50%);
+
   z-index: 0;
   pointer-events: none;
+
+  overflow: visible;
 }
 
 .system-blueprint-base,
 .system-blueprint-glow {
   position: absolute;
-  inset: 0;
 
-  width: 100%;
-  height: 100%;
+  left: 50%;
+  top: 50%;
 
-  object-fit: contain;
+  width: 100vw;
+  height: 100vh;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1.6, 1.0);
+
+  object-fit: fill;
 }
+
+/* ---------------------------------------------------------
+   Base Blueprint
+   Always-visible low-opacity schematic.
+   --------------------------------------------------------- */
 
 .system-blueprint-base {
-  opacity: 0.1;
+  opacity: 0.04;
 }
 
-.system-blueprint-glow {
-  opacity: 0;
-}
+
+/* ---------------------------------------------------------
+   Blueprint Glow Layer
+   Revealed locally using the spotlight mask.
+   --------------------------------------------------------- */
 
 .system-blueprint-glow {
   opacity: 0;
@@ -41,23 +76,27 @@
     transparent var(--spotlight-size)
   );
 
-  transition:
-    opacity 220ms ease,
-    filter 220ms ease;
-
   filter:
     brightness(1.8)
     saturate(1.4);
 
   mix-blend-mode: screen;
+
+  transition:
+    opacity 220ms ease,
+    filter 220ms ease;
 }
 
-.system-blueprint-scene.is-active
-.system-blueprint-glow {
+.system-blueprint-scene.is-active .system-blueprint-glow {
   opacity: 1;
 }
 
-/*Blueprint node before */
+
+/* =========================================================
+   BLUEPRINT NODE LAYER
+   Full-size positioning plane for the six system-stage cards.
+   ========================================================= */
+
 .system-blueprint-nodes {
   position: absolute;
   inset: 0;
@@ -68,6 +107,12 @@
 
   pointer-events: none;
 }
+
+
+/* =========================================================
+   BLUEPRINT NODE CARD
+   Shared visual and interaction styling for each system stage.
+   ========================================================= */
 
 .system-blueprint-node {
   position: absolute;
@@ -104,7 +149,15 @@
     box-shadow 220ms ease;
 }
 
-/* Blueprint node after */
+
+/* ---------------------------------------------------------
+   Node Typography
+   --------------------------------------------------------- */
+
+.system-blueprint-node-title {
+  display: block;
+  font-weight: 700;
+}
 
 .system-blueprint-node-copy {
   display: block;
@@ -113,7 +166,6 @@
   margin-top: 0;
 
   opacity: 0;
-
   overflow: hidden;
 
   transition:
@@ -122,18 +174,10 @@
     margin-top 260ms ease;
 }
 
-/* Blueprint node hover */
 
-.system-blueprint-node:hover,
-.system-blueprint-node:focus-visible {
-  width: 260px;
-  min-height: 110px;
-
-  border-color: rgba(126, 228, 255, 0.58);
-
-  box-shadow:
-    0 0 34px rgba(80, 180, 255, 0.16);
-}
+/* ---------------------------------------------------------
+   Node Hover / Keyboard Focus State
+   --------------------------------------------------------- */
 
 .system-blueprint-node:hover,
 .system-blueprint-node:focus-visible {
@@ -153,13 +197,25 @@
   opacity: 1;
 }
 
+
+/* =========================================================
+   SCENE A CANVAS
+   Fixed scene dimensions used for blueprint layout and
+   GSAP camera-centering calculations.
+   ========================================================= */
+
 .workspace-scene-a-card {
   position: relative;
   width: 1200px;
   height: 800px;
 }
 
-/* Blueprint card positioning */
+/* =========================================================
+   BLUEPRINT NODE POSITIONS
+   Percentage-based positions within the 1200 × 800 Scene A canvas.
+   These can be tuned later to match final blueprint geometry.
+   ========================================================= */
+
 .system-blueprint-node--attract {
   top: 12%;
   left: 14%;
@@ -188,22 +244,4 @@
 .system-blueprint-node--learn {
   top: 66%;
   left: 18%;
-}
-
-.system-blueprint-node-title {
-  display: block;
-  font-weight: 700;
-}
-
-.system-blueprint-node-copy {
-  display: block;
-  max-height: 0;
-  margin-top: 0;
-  opacity: 0;
-  overflow: hidden;
-
-  transition:
-    max-height 260ms ease,
-    opacity 200ms ease,
-    margin-top 260ms ease;
 }

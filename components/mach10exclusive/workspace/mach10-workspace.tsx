@@ -1,20 +1,49 @@
 "use client";
+
 import "@/styles/pages/blueprint.css";
+
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import WorkspaceBackground from "./workspace-background";
 import WorkspaceRippleLayer from "./workspace-ripple-layer";
 import SystemBlueprintScene from "@/components/mach10exclusive/workspace/system-blueprint-scene";
+
 gsap.registerPlugin(ScrollTrigger);
 
 const CELL_SIZE = 56;
+const SCENE_A_GAP_VW = 0.31;
+
+function getCameraTarget(
+  scene: HTMLElement,
+  target: HTMLElement,
+  viewportX = 0.5,
+  viewportY = 0.5
+) {
+  const targetCenterX =
+    scene.offsetLeft +
+    target.offsetLeft +
+    target.offsetWidth / 2;
+
+  const targetCenterY =
+    scene.offsetTop +
+    target.offsetTop +
+    target.offsetHeight / 2;
+
+  return {
+    x: window.innerWidth * viewportX - targetCenterX,
+    y: window.innerHeight * viewportY - targetCenterY,
+  };
+}
 
 export default function Mach10Workspace() {
   const worldRef = useRef<HTMLDivElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
 
   const momentumRef = useRef<HTMLDivElement>(null);
+  const momentumHeadingRef =
+    useRef<HTMLHeadingElement>(null);
 
   const sceneARef = useRef<HTMLDivElement>(null);
   const sceneACardRef = useRef<HTMLDivElement>(null);
@@ -26,173 +55,304 @@ export default function Mach10Workspace() {
 
   useEffect(() => {
     if (
-  !worldRef.current ||
-  !workspaceRef.current ||
-  !momentumRef.current ||
-  !sceneARef.current ||
-  !sceneACardRef.current ||
-  !sceneBRef.current ||
-  !sceneBCardRef.current
-) {
-  return;
-}
-const sceneA = sceneARef.current;
-const sceneACard = sceneACardRef.current;
+      !worldRef.current ||
+      !workspaceRef.current ||
+      !momentumRef.current ||
+      !momentumHeadingRef.current ||
+      !sceneARef.current ||
+      !sceneACardRef.current ||
+      !sceneBRef.current ||
+      !sceneBCardRef.current
+    ) {
+      return;
+    }
 
-const sceneB = sceneBRef.current;
-const sceneBCard = sceneBCardRef.current;
+    /*
+     * -------------------------------------------------------
+     * DOM ELEMENTS
+     * -------------------------------------------------------
+     */
 
-const viewportCenterX = window.innerWidth / 2;
-const viewportCenterY = window.innerHeight / 2;
+    const momentum = momentumRef.current;
+    const momentumHeading = momentumHeadingRef.current;
 
-// Scene A camera destination
-const sceneACenterX =
-  sceneA.offsetLeft + sceneACard.offsetWidth / 2;
+    const sceneA = sceneARef.current;
+    const sceneACard = sceneACardRef.current;
 
-const sceneACenterY =
-  sceneA.offsetTop + sceneACard.offsetHeight / 2;
+    const sceneB = sceneBRef.current;
+    const sceneBCard = sceneBCardRef.current;
 
-const sceneATargetX =
-  viewportCenterX - sceneACenterX;
+    /*
+     * -------------------------------------------------------
+     * RESPONSIVE WORLD LAYOUT
+     *
+     * Scene A is positioned relative to the actual rendered
+     * end of the Momentum heading rather than a fixed world X.
+     * -------------------------------------------------------
+     */
 
-const sceneATargetY =
-  viewportCenterY - sceneACenterY;
+    const updateResponsiveLayout = () => {
+      const headingStartX =
+        momentum.offsetLeft +
+        momentumHeading.offsetLeft;
 
-// Scene B camera destination
-const sceneBCenterX =
-  sceneB.offsetLeft + sceneBCard.offsetWidth / 2;
+      const headingWidth =
+        momentumHeading.scrollWidth;
 
-const sceneBCenterY =
-  sceneB.offsetTop + sceneBCard.offsetHeight / 2;
+      const headingEndX =
+        headingStartX + headingWidth;
 
-const sceneBTargetX =
-  viewportCenterX - sceneBCenterX;
+      const sceneAGap =
+        window.innerWidth * SCENE_A_GAP_VW;
 
-const sceneBTargetY =
-  viewportCenterY - sceneBCenterY;
+      const desiredSceneAX =
+        Math.round(
+          (headingEndX + sceneAGap) / CELL_SIZE
+        ) * CELL_SIZE;
 
-const momentumTargetX = -4032;
-const momentumTargetY = 0;
+      sceneA.style.left = `${desiredSceneAX}px`;
+    };
 
-const updateRipplePosition = () => {
-  if (!rippleRef.current || !worldRef.current) return;
+    /*
+     * -------------------------------------------------------
+     * CAMERA TARGETS
+     * -------------------------------------------------------
+     */
 
-  const worldX = gsap.getProperty(
-    worldRef.current,
-    "x"
-  ) as number;
+    const calculateCameraTargets = () => {
+      const sceneATarget = getCameraTarget(
+        sceneA,
+        sceneACard
+      );
 
-  const worldY = gsap.getProperty(
-    worldRef.current,
-    "y"
-  ) as number;
+      const sceneBTarget = getCameraTarget(
+        sceneB,
+        sceneBCard
+      );
 
-  const cameraX = -worldX;
-  const cameraY = -worldY;
+      return {
+        sceneA: sceneATarget,
+        sceneB: sceneBTarget,
+      };
+    };
 
-  const snappedX =
-    Math.floor(cameraX / CELL_SIZE) * CELL_SIZE;
+    // Position Scene A before measuring its camera target.
+    updateResponsiveLayout();
 
-  const snappedY =
-    Math.floor(cameraY / CELL_SIZE) * CELL_SIZE;
+    let cameraTargets =
+      calculateCameraTargets();
 
-  gsap.set(rippleRef.current, {
-    x: snappedX,
-    y: snappedY,
-  });
-};    
+    /*
+     * Momentum remains hardcoded for now.
+     * We will address this separately after validating
+     * responsive Scene A positioning.
+     */
 
+    const momentumTargetX = -4032;
+    const momentumTargetY = 0;
 
-const ctx = gsap.context(() => {
-  const timeline = gsap.timeline({
-    scrollTrigger: {
-      trigger: workspaceRef.current,
-      start: "top top",
-      end: "+=300%",
-      scrub: 2,
-      pin: true,
-    },
-  });
+    /*
+     * -------------------------------------------------------
+     * RIPPLE POSITION TRACKING
+     * -------------------------------------------------------
+     */
 
-  timeline
-  .to(worldRef.current, {
-    x: momentumTargetX,
-    y: momentumTargetY,
-    duration: 1.5,
-    ease: "power2.in",
-    onUpdate: updateRipplePosition,
-  })
+    const updateRipplePosition = () => {
+      if (
+        !rippleRef.current ||
+        !worldRef.current
+      ) {
+        return;
+      }
 
+      const worldX = gsap.getProperty(
+        worldRef.current,
+        "x"
+      ) as number;
 
-  // Then settle vertically into Scene A
-  .to(worldRef.current, {
-    x: sceneATargetX,
-    y: sceneATargetY,
-    duration: 0.35,
-    ease: "power1.out",
-    onUpdate: updateRipplePosition,
-  })
+      const worldY = gsap.getProperty(
+        worldRef.current,
+        "y"
+      ) as number;
 
-  .to(worldRef.current, {
-    x: sceneBTargetX,
-    y: sceneBTargetY,
-    duration: 2,
-    ease: "none",
-    onUpdate: updateRipplePosition,
-  });
-}, workspaceRef);
+      const cameraX = -worldX;
+      const cameraY = -worldY;
 
-return () => ctx.revert();
-}, []);
+      const snappedX =
+        Math.floor(cameraX / CELL_SIZE) *
+        CELL_SIZE;
 
-return (
-  <section ref={workspaceRef} className="mach10-workspace">
-    <div className="workspace-viewport">
-      <div ref={worldRef} className="workspace-world">
-        <WorkspaceBackground />
+      const snappedY =
+        Math.floor(cameraY / CELL_SIZE) *
+        CELL_SIZE;
 
-        <WorkspaceRippleLayer ref={rippleRef} />
+      gsap.set(rippleRef.current, {
+        x: snappedX,
+        y: snappedY,
+      });
+    };
 
+    /*
+     * -------------------------------------------------------
+     * RESPONSIVE RECALCULATION
+     * -------------------------------------------------------
+     */
+
+    let resizeTimeout:
+      ReturnType<typeof setTimeout>;
+
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+
+      resizeTimeout = setTimeout(() => {
+        // Re-measure Momentum and reposition Scene A.
+        updateResponsiveLayout();
+
+        // Recalculate camera targets after Scene A moves.
+        cameraTargets =
+          calculateCameraTargets();
+
+        ScrollTrigger.refresh();
+      }, 150);
+    };
+
+    window.addEventListener(
+      "resize",
+      handleResize
+    );
+
+    /*
+     * -------------------------------------------------------
+     * GSAP CAMERA TIMELINE
+     * -------------------------------------------------------
+     */
+
+    const ctx = gsap.context(() => {
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: workspaceRef.current,
+          start: "top top",
+          end: "+=300%",
+          scrub: 2,
+          pin: true,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      timeline
+        .to(worldRef.current, {
+          x: momentumTargetX,
+          y: momentumTargetY,
+          duration: 1.5,
+          ease: "power2.in",
+          onUpdate: updateRipplePosition,
+        })
+
+        // Settle into Scene A.
+        .to(worldRef.current, {
+          x: () =>
+            cameraTargets.sceneA.x,
+          y: () =>
+            cameraTargets.sceneA.y,
+          duration: 0.35,
+          ease: "power1.out",
+          onUpdate: updateRipplePosition,
+        })
+
+        // Travel to Scene B.
+        .to(worldRef.current, {
+          x: () =>
+            cameraTargets.sceneB.x,
+          y: () =>
+            cameraTargets.sceneB.y,
+          duration: 2,
+          ease: "none",
+          onUpdate: updateRipplePosition,
+        });
+    }, workspaceRef);
+
+    /*
+     * -------------------------------------------------------
+     * CLEANUP
+     * -------------------------------------------------------
+     */
+
+    return () => {
+      ctx.revert();
+
+      window.removeEventListener(
+        "resize",
+        handleResize
+      );
+
+      clearTimeout(resizeTimeout);
+    };
+  }, []);
+
+  return (
+    <section
+      ref={workspaceRef}
+      className="mach10-workspace"
+    >
+      <div className="workspace-viewport">
         <div
-          ref={momentumRef}
-          className="workspace-momentum-zone"
+          ref={worldRef}
+          className="workspace-world"
         >
-          <h1 className="workspace-momentum-heading">
-            Keep Your Momentum.
-          </h1>
-        </div>
+          <WorkspaceBackground />
 
-       <div
-  ref={sceneARef}
-  className="workspace-scene workspace-scene-a"
->
-  <div
-    ref={sceneACardRef}
-    className="workspace-scene-a-card"
-  >
-    <SystemBlueprintScene />
-  </div>
-</div>
+          <WorkspaceRippleLayer
+            ref={rippleRef}
+          />
 
-        <div
-          ref={sceneBRef}
-          className="workspace-scene workspace-scene-b"
-        >
           <div
-            ref={sceneBCardRef}
-            className="workspace-test-card"
+            ref={momentumRef}
+            className="workspace-momentum-zone"
           >
-            <span>M10 // SCENE B</span>
+            <h1
+              ref={momentumHeadingRef}
+              className="workspace-momentum-heading"
+            >
+              Keep Your Momentum.
+            </h1>
+          </div>
 
-            <h2>Second workspace zone.</h2>
+          <div
+            ref={sceneARef}
+            className="workspace-scene workspace-scene-a"
+          >
+            <div
+              ref={sceneACardRef}
+              className="workspace-scene-a-card"
+            >
+              <SystemBlueprintScene />
+            </div>
+          </div>
 
-            <p>
-              This scene exists farther across the same virtual surface.
-            </p>
+          <div
+            ref={sceneBRef}
+            className="workspace-scene workspace-scene-b"
+          >
+            <div
+              ref={sceneBCardRef}
+              className="workspace-test-card"
+            >
+              <span>
+                M10 // SCENE B
+              </span>
+
+              <h2>
+                Second workspace zone.
+              </h2>
+
+              <p>
+                This scene exists farther across
+                the same virtual surface.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
 }
